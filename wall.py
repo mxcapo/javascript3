@@ -49,7 +49,7 @@ def _convert_to_JSON(result):
 @app.route("/api/wall/list")
 def list_messages():
     """Return list of wall messages as JSON."""
-
+    
     result = wall_list()
     return _convert_to_JSON(result)
 
