@@ -2,7 +2,9 @@ import json
 
 from flask import Flask, request, render_template, make_response
 
-from api import wall_list, wall_add, wall_error
+from api import wall_list, wall_add, wall_error, wall_reset
+
+from HTMLParser import HTMLParser
 
 
 app = Flask(__name__)
@@ -49,7 +51,7 @@ def _convert_to_JSON(result):
 @app.route("/api/wall/list")
 def list_messages():
     """Return list of wall messages as JSON."""
-    
+
     result = wall_list()
     return _convert_to_JSON(result)
 
@@ -74,6 +76,16 @@ def add_message():
 
     return _convert_to_JSON(result)
 
+
+@app.route("/api/wall/reset", methods=['POST'])
+def reset_wall():
+    """Reset wall messages to inital values"""
+
+
+
+    result = wall_reset()
+
+    return _convert_to_JSON(result)
 
 
 if __name__ == "__main__":

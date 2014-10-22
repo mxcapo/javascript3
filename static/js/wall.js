@@ -8,13 +8,16 @@ $(document).ready(function () {
             console.log("we got messages back, let's display them");
             $("#message-container").empty();
             for (var n = 0; n < result.messages.length; n++) {
-                console.log(result.messages[n].message);
-                $("#message-container").append("<li class='list-group-item'>"+result.messages[n].message+"</li>");
+                console.log("message to post: " + result.messages[n].message);
+                $("#message-container").prepend("<li class='list-group-item'>"+result.messages[n].message+"</li>");
             }
         }
-
     });
+
     $("#message-form").submit(handleFormSubmit);
+    $("#message-form").submit(delayNextPost);
+    $("#reset-wall").click(resetWall);
+    // $("#message-form").submit(clearHtml);
 });
 
 
@@ -22,10 +25,14 @@ $(document).ready(function () {
  * Handle submission of the form.
  */
 function handleFormSubmit(evt) {
+    delayNextPost();
+
     evt.preventDefault();
 
     var textArea = $("#message");
     var msg = textArea.val();
+    msg = $("<html>" + msg + "</html>").text();
+    console.log(msg);
 
     console.log("handleFormSubmit: ", msg);
     addMessage(msg);
@@ -34,6 +41,30 @@ function handleFormSubmit(evt) {
     textArea.val("");
 }
 
+
+
+function delayNextPost(evt) {
+    
+    $("#message-send").prop("disabled", true);
+    // setTimeout(function () {
+    //     $("#message-send").removeAttr("disabled");
+    //     },500);
+    // }
+    var self = this;
+
+    setTimeout(function () {
+        $("#message-send").prop("disabled", false);
+      }, 5000);
+
+    console.log("is this alive");
+}
+
+function clearHtml(evt) {
+    evt.preventDefault();
+    console.log($("m").text());
+    // mess = $("#message").serialize();
+    // console.log("serialized" + mess);
+}
 
 /**
  * Makes AJAX call to the server and the message to it.
@@ -48,6 +79,19 @@ function addMessage(msg) {
         }
     );
 }
+
+function resetWall(evt) {
+    console.log("clicked reset button");
+    $.post(
+        "/api/wall/reset",
+        {},
+        function (result) {
+            console.log(result);
+        }
+         );
+}
+
+
 
 
 /**
