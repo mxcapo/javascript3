@@ -6,3 +6,10 @@
 h1 {
     color: purple;
 }
+
+#undo-last {
+	margin-top: 1em;
+}
+#refresh-wall {
+	margin-top: 1em;
+}

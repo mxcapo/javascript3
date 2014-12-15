@@ -2,7 +2,7 @@ import json
 
 from flask import Flask, request, render_template, make_response
 
-from api import wall_list, wall_add, wall_error, wall_reset
+from api import wall_list, wall_add, wall_error, wall_reset, undo_last
 
 from HTMLParser import HTMLParser
 
@@ -22,7 +22,6 @@ app.secret_key = 'a4c96d59-57a8-11e4-8b97-80e6500ee2f6'
 def index():
     """Return index page."""
     return render_template("wall.html")
-
 
 def _convert_to_JSON(result):
     """Convert result object to a JSON web request."""
@@ -81,12 +80,16 @@ def add_message():
 def reset_wall():
     """Reset wall messages to inital values"""
 
-
-
     result = wall_reset()
 
     return _convert_to_JSON(result)
 
+@app.route("/api/wall/undo", methods=['POST'])
+def del_last():
+    print "made it here"
+    result = undo_last()
+
+    return _convert_to_JSON(result)
 
 if __name__ == "__main__":
     app.run(debug=True)

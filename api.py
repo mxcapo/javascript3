@@ -63,9 +63,23 @@ def wall_add(msg):
 def wall_reset():
     """Reset wall messages to default message only
     """
-
+    # print session['wall']
+    # print session['wall'][:-1]
     session['wall'] = DEFAULT_MESSAGES
     result = wall_list()
     result["result"] = "Wall reset to initial values."
 
     return result
+
+def undo_last():
+    """select last message posted to session and remove
+    from message wall, ie session"""
+    removeThis = session['wall'][-1]
+    print removeThis['message']
+    session['wall'] = session['wall'][:-1]
+    removed_last_msg = wall_list()
+    removed_last_msg["result"] = "Successfully removed '%s' from wall" % removeThis['message']
+
+    return removed_last_msg
+
+
